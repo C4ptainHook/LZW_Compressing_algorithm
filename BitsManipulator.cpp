@@ -11,11 +11,18 @@ uint8_t BitStreamWriter::getByte() {
     uint8_t byte;
     if (bitsInBuffer>0 && bitsInBuffer<8)
     {
-        byte = bitBuffer << (8 - bitsInBuffer);
+        byte = bitBuffer << (8 - bitsInBuffer) & 0xFF;
+        bitsInBuffer -= 8;
+        return byte;
     }
+    else if (bitsInBuffer>=8){
     byte = (bitBuffer >> (bitsInBuffer - 8)) & 0xFF;
     bitsInBuffer -= 8;
-    return byte;
+        return byte;
+    }
+    else{
+        throw runtime_error("Unexpected ERROR with BUFFER during compression");
+    }
 }
 
 int BitStreamWriter::size() {

@@ -99,7 +99,7 @@ namespace lzw
         BitStreamReader reader;
         ifstream input_file(filename, ios::binary);
 
-        while (sizeBits != reader.bitsProcessed()) {
+        while (sizeBits > reader.bitsProcessed()) {
             code = static_cast<int>(reader.readBits(input_file, codeBitsWidth));
 
             if (prevCode == Nil) {

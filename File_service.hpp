@@ -56,7 +56,7 @@ namespace fs {
 
         if (extension != "Bzip") {
             throw std::invalid_argument("In FILE" + filename +
-                                        " INCORRECT EXTENSION" + extension + ", !!!must be .Bzip!!!\n");
+                                        " INCORRECT EXTENSION" + extension + ", !!!Must be .Bzip!!!\n");
         }
 
     }
