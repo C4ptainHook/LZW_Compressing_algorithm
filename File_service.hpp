@@ -1,8 +1,11 @@
+#pragma once
 #include <iostream>
 #include <fstream>
 
 namespace fs {
     static const std::string format = ".Bzip";
+    static const std::string compress = "--compress";
+    static const std::string decompress = "--decompress";
 
     void validateReadFile(const std::string &filename) {
         std::ifstream inputFile(filename);
@@ -26,9 +29,8 @@ namespace fs {
     }
 
     size_t GetFileSize(std::string filename) {
+        validateReadFile(filename);
         std::ifstream file(filename, std::ios::binary);
-        if (!file.is_open())
-            throw std::runtime_error("File for compression wasn`t opened");
         file.seekg(0, std::ios::end);
         size_t size_of_file = file.tellg();
         file.close();
@@ -41,21 +43,29 @@ namespace fs {
         return compressed_file_name;
     }
 
-    void validateExtension(const std::string &filename, bool isInput) {
+    void validateExtension(const std::string &filename) {
 
         std::size_t pos = filename.find_last_of('.');
 
         if (pos == std::string::npos) {
             throw std::invalid_argument("in filename " + filename +
-                                        " there is no extension .myzip\n");
+                                        " there is no extension .Bzip\n");
         }
 
         std::string extension = filename.substr(pos + 1);
 
-        if (extension != "myzip") {
+        if (extension != "Bzip") {
             throw std::invalid_argument("In FILE" + filename +
                                         " INCORRECT EXTENSION" + extension + ", !!!must be .Bzip!!!\n");
         }
 
+    }
+    string validateArguments(int argc, char* argv[]){
+        if(argc<3){
+            throw runtime_error("Too few arguments");
+        }
+        if(argv[1]!=compress&&argv[1]!=decompress)
+        {throw runtime_error("Program does not support "+string(argv[1])+"argument");}
+        return argv[1];
     }
 }

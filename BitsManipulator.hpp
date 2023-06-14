@@ -1,3 +1,4 @@
+#pragma once
 #include "Dictionary.hpp"
 #include <iostream>
 #include <fstream>
