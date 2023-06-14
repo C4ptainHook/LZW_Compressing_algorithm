@@ -6,8 +6,10 @@ namespace lzw
     void Compress(std::string filename)
     {
         size_t uncompressedSizeBytes = fs::GetFileSize(filename);
+        fs::validateReadFile(filename);
         ifstream input_file(filename, ios::binary);
         string output_file_name = fs::GetOutputFileName(filename);
+        fs::validateWriteFile(filename);
         ofstream output_file(output_file_name, ios::binary);
 
         int code = Nil;
@@ -88,9 +90,11 @@ namespace lzw
         int prevCode = Nil;
         int firstByte = 0;
         int codeBitsWidth = StartBits;
+        fs::validateExtension(filename);
+        fs::validateReadFile(filename);
         size_t sizeBits = 8*fs::GetFileSize(filename);
         string output_file = filename + "DECODED.txt";
-
+        fs::validateWriteFile(output_file);
         Dictionary dictionary;
         BitStreamReader reader;
         ifstream input_file(filename, ios::binary);

@@ -1,3 +1,4 @@
+#pragma once
 #include "Bitsmanipulator.hpp"
 #include<iostream>
 #include <string>
