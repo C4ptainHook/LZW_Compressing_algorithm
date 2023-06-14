@@ -9,7 +9,7 @@ namespace lzw
         fs::validateReadFile(filename);
         ifstream input_file(filename, ios::binary);
         string output_file_name = fs::GetOutputFileName(filename);
-        fs::validateWriteFile(filename);
+        fs::validateWriteFile(output_file_name);
         ofstream output_file(output_file_name, ios::binary);
 
         int code = Nil;
