@@ -60,12 +60,4 @@ namespace fs {
         }
 
     }
-    string validateArguments(int argc, char* argv[]){
-        if(argc<3){
-            throw runtime_error("Too few arguments");
-        }
-        if(argv[1]!=compress&&argv[1]!=decompress)
-        {throw runtime_error("Program does not support "+string(argv[1])+"argument");}
-        return argv[1];
-    }
 }
