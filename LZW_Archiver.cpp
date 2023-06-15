@@ -9,7 +9,7 @@ namespace lzw
         fs::validateReadFile(filename);
         ifstream input_file(filename, ios::binary);
         string output_file_name = fs::GetOutputFileName(filename);
-        fs::validateWriteFile(filename);
+        fs::validateWriteFile(output_file_name);
         ofstream output_file(output_file_name, ios::binary);
 
         int code = Nil;
@@ -29,12 +29,12 @@ namespace lzw
                 continue;
             }
 
-           writer.appendBuffer(code, codeBitsWidth);
-
-            while (writer.size() >= 8)
-            {
-                output_file.put(static_cast<char>(writer.getByte()));
-            }
+           writer.appendBuffer(output_file, code, codeBitsWidth);
+//
+//            while (writer.size() >= 8)
+//            {
+//                output_file.put(static_cast<char>(writer.getByte()));
+//            }
 
             if (!dictionary.flush(codeBitsWidth))
             {
@@ -45,14 +45,14 @@ namespace lzw
 
         if (code != Nil)
         {
-            writer.appendBuffer(code, codeBitsWidth);;
+            writer.appendBuffer(output_file, code, codeBitsWidth);;
         }
 
-        if (writer.size() > 0)
-        {
-            output_file.put(static_cast<char>(writer.getByte()));
-        }
-
+//        if (writer.size() > 0)
+//        {
+//            output_file.put(static_cast<char>(writer.getByte()));
+//        }
+        writer.putResidue(output_file);
         input_file.close();
         output_file.close();
     }
