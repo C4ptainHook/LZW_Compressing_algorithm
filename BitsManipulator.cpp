@@ -4,22 +4,22 @@ void BitStreamWriter::appendBit(const int bit)
 {
     const uint16_t mask = uint16_t(1) << nextBitPos;
     mainBuffer = (mainBuffer & ~mask) | (-bit & mask);
-    ++nextBitPos;
+    --nextBitPos;
 }
 
-void BitStreamWriter::appendBuffer(ofstream& file, const uint64_t num, const int bitCount)
+void BitStreamWriter::appendBuffer(ofstream& file, const uint16_t num, const int bitCount)
 {
-    assert(bitCount <= 64);
-    for (int b = 0; b < bitCount; ++b)
+    const uint16_t leftmask = ~0xFF;
+    const uint16_t rightmask = 0xFF;
+    assert(bitCount <= 16);
+    for (int b = bitCount-1; b >= 0; --b)
     {
         const uint64_t mask = uint64_t(1) << b;
-        if(nextBitPos==8*sizeof(bufferType)) {
-            for (int i = 0; i < sizeof(bufferType); ++i) {
-                file.put(static_cast<char>(mainBuffer & 0xFF));
-                mainBuffer>>=8;
-            }
+        if(nextBitPos<0) {
+            file.put(static_cast<char>((mainBuffer & leftmask)>>8));
+            file.put(static_cast<char>(mainBuffer & rightmask));
             mainBuffer=0;
-            nextBitPos=0;
+            nextBitPos=8*sizeof(bufferType)-1;
         }
             int bit = !!(num & mask);
             appendBit(bit);
@@ -32,29 +32,6 @@ void BitStreamWriter::putResidue(ofstream& file) {
         file.put(static_cast<char>(mainBuffer));
     }
 }
-
-//void BitStreamWriter::appendBuffer(const uint64_t code, const int bitCount)
-//{
-//    assert(bitCount <= 17);
-//    bitBuffer = (bitBuffer << bitCount) | code;
-//    bitsInBuffer += bitCount;
-//}
-//
-//uint8_t BitStreamWriter::getByte() {
-//    uint8_t byte;
-//    if (bitsInBuffer>0 && bitsInBuffer<8)
-//    {
-//        byte = bitBuffer << (8 - bitsInBuffer);
-//    }
-//    byte = (bitBuffer >> (bitsInBuffer - 8)) & 0xFF;
-//    bitsInBuffer -= 8;
-//    return byte;
-//}
-//
-//int BitStreamWriter::size() {
-//    return bitsInBuffer;
-//}
-
 //////////////////////////////////////////////////////////////////////////////////////
 //                      Reader for DECOMPRESSION BELOW                              //
 /////////////////////////////////////////////////////////////////////////////////////

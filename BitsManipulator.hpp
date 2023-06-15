@@ -11,15 +11,12 @@ class BitStreamWriter final
 {
 private:
     bufferType mainBuffer = 0;
-    int nextBitPos = 0;
-//    int bitsInMain = 8*sizeof(bufferType) - nextBitPos+1;
+    int nextBitPos = 8*sizeof(bufferType)-1;
     void appendBit(int bit);
 public:
     BitStreamWriter()=default;
-    void appendBuffer(ofstream&  file, uint64_t code, int bitCount);
+    void appendBuffer(ofstream&  file, uint16_t code, int bitCount);
     void putResidue(ofstream& file);
-//    uint8_t getByte();
-//    int size();
 };
 
 class BitStreamReader final
