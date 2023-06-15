@@ -28,5 +28,5 @@ private:
 public:
     BitStreamReader()=default;
     uint32_t readBits(ifstream& file, int bitCount);
-    int bitsProcessed();
+    int bitsProcessed() const;
 };

@@ -30,12 +30,6 @@ namespace lzw
             }
 
            writer.appendBuffer(output_file, code, codeBitsWidth);
-//
-//            while (writer.size() >= 8)
-//            {
-//                output_file.put(static_cast<char>(writer.getByte()));
-//            }
-
             if (!dictionary.flush(codeBitsWidth))
             {
                 dictionary.add(code, value);
@@ -48,10 +42,6 @@ namespace lzw
             writer.appendBuffer(output_file, code, codeBitsWidth);;
         }
 
-//        if (writer.size() > 0)
-//        {
-//            output_file.put(static_cast<char>(writer.getByte()));
-//        }
         writer.putResidue(output_file);
         input_file.close();
         output_file.close();

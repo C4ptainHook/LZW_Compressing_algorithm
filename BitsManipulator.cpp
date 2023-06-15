@@ -58,6 +58,6 @@ uint32_t BitStreamReader::readBits(ifstream&  file, const int bitCount) {
     return code;
 }
 
-int BitStreamReader::bitsProcessed() {
+int BitStreamReader::bitsProcessed() const{
     return numBitsRead;
 }
