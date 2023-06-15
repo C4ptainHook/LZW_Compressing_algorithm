@@ -10,13 +10,15 @@ typedef uint16_t bufferType;
 class BitStreamWriter final
 {
 private:
+    const uint16_t leftmask = ~0xFF;
+    const uint16_t rightmask = 0xFF;
     bufferType mainBuffer = 0;
     int nextBitPos = 8*sizeof(bufferType)-1;
     void appendBit(int bit);
 public:
     BitStreamWriter()=default;
     void appendBuffer(ofstream&  file, uint16_t code, int bitCount);
-    void putResidue(ofstream& file);
+    void putResidue(ofstream& file) const;
 };
 
 class BitStreamReader final

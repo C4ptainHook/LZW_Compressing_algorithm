@@ -10,8 +10,6 @@ void BitStreamWriter::appendBit(const int bit)
 
 void BitStreamWriter::appendBuffer(ofstream& file, const uint16_t num, const int bitCount)
 {
-    const uint16_t leftmask = ~0xFF;
-    const uint16_t rightmask = 0xFF;
     assert(bitCount <= 16);
     for (int b = bitCount-1; b >= 0; --b)
     {
@@ -27,11 +25,15 @@ void BitStreamWriter::appendBuffer(ofstream& file, const uint16_t num, const int
     }
 }
 
-void BitStreamWriter::putResidue(ofstream& file) {
-    if(nextBitPos!=0){
-        mainBuffer<<=(8-nextBitPos);
-        file.put(static_cast<char>(mainBuffer));
-    }
+void BitStreamWriter::putResidue(ofstream& file) const {
+   assert(nextBitPos<8*sizeof(bufferType)&&nextBitPos>=0);
+   if(nextBitPos>7) {
+       file.put(static_cast<char>((mainBuffer & leftmask)>>8));
+   }
+   else{
+       file.put(static_cast<char>((mainBuffer & leftmask)>>8));
+       file.put(static_cast<char>(mainBuffer & rightmask));
+   }
 }
 //////////////////////////////////////////////////////////////////////////////////////
 //                      Reader for DECOMPRESSION BELOW                              //
