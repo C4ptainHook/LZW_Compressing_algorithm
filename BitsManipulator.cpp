@@ -2,6 +2,7 @@
 
 void BitStreamWriter::appendBit(const int bit)
 {
+    assert(0<nextBitPos&&nextBitPos<8*sizeof(bufferType));
     const uint16_t mask = uint16_t(1) << nextBitPos;
     mainBuffer = (mainBuffer & ~mask) | (-bit & mask);
     --nextBitPos;
